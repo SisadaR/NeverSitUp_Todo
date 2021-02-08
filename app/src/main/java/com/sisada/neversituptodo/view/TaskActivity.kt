@@ -18,7 +18,10 @@ import com.sisada.neversituptodo.model.Task
 import com.sisada.neversituptodo.viewmodel.AuthViewModel
 import com.sisada.neversituptodo.viewmodel.TaskViewModel
 
-class TaskActivity : AppCompatActivity(),AddTaskFragment.onAddTaskListener {
+class TaskActivity : AppCompatActivity(),
+    AddTaskFragment.onAddTaskListener,
+    TaskViewFragment.onTaskViewDialogCloseListener
+{
 
     private lateinit var binding: ActivityTaskBinding
     private lateinit var fragmentListTask : ListTaskFragment
@@ -178,5 +181,16 @@ class TaskActivity : AppCompatActivity(),AddTaskFragment.onAddTaskListener {
     override fun taskAdded(task: Task) {
         fragmentListTask.addTask(task)
     }
+
+    override fun taskViewDialogClose(task: Task) {
+        Log.d("taskViewDialogClose", task.description)
+        fragmentListTask.updateTask(task)
+    }
+
+    override fun taskViewDialogDeleteTask(task: Task) {
+        Log.d("taskViewDialogDelete", task.description)
+        fragmentListTask.removeTask(task)
+    }
+
 
 }

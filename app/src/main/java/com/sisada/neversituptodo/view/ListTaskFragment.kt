@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sisada.neversituptodo.R
 import com.sisada.neversituptodo.databinding.FragmentListTaskBinding
+import com.sisada.neversituptodo.etc.BUNDLE_KEY_TASK
 import com.sisada.neversituptodo.model.Task
 
 class ListTaskFragment : Fragment() {
@@ -83,17 +84,25 @@ class ListTaskFragment : Fragment() {
         adapter!!.notifyDataSetChanged()
     }
 
-    fun removeTask(task:Task){
-
+    public fun removeTask(task:Task){
+        items.removeIf{ it._id == task._id }
+        adapter!!.notifyDataSetChanged()
     }
 
-    fun updateTask(task:Task){
-
+    public fun updateTask(task:Task){
+        var item = items.find { it._id == task._id }
+        item!!.description = task.description
+        item!!.completed = task.completed
+        adapter!!.notifyDataSetChanged()
     }
 
     fun onListItemClicked(task: Task){
-
-
+        var bundle = Bundle().apply {
+            putParcelable(BUNDLE_KEY_TASK, task)
+        }
+        val dialog = TaskViewFragment()
+        dialog.arguments = bundle
+        dialog.show(fragmentManager!!, "")
     }
 
     private fun initFakeTasks(){
