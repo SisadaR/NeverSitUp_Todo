@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.sisada.neversituptodo.api.Status
 import com.sisada.neversituptodo.databinding.ActivityLoginBinding
 import com.sisada.neversituptodo.etc.SharedInfo
+import com.sisada.neversituptodo.etc.WaitDialog
 import com.sisada.neversituptodo.viewmodel.AuthViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-   
+
         this.onLoginButtonClicked()
     }
 
@@ -34,6 +35,8 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
 
+            var waitDialog = WaitDialog(this)
+            waitDialog.show()
 
             val password = binding.tinPasswordValue.text.toString()
             val email = binding.tinEmailValue.text.toString()
@@ -41,14 +44,14 @@ class LoginActivity : AppCompatActivity() {
                 it?.let { resource ->
                     when (resource.status) {
                         Status.SUCCESS -> {
-
+                            waitDialog.dismiss()
                             resource.data?.let { response ->
                                 SharedInfo.newToken(this, response.token)
                                 gotoTaskActivity()
                             }
-
                         }
                         Status.ERROR -> {
+                            waitDialog.dismiss()
                             Log.e("LoginError", resource.message!!)
 
                             AlertDialog.Builder(this)
