@@ -20,6 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tin_age" />
 
+    <Button
+        android:id="@+id/btn_goto_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/purple_200"
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tin_name"
         android:layout_width="match_parent"
@@ -37,7 +51,7 @@
             android:id="@+id/tin_name_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:hint="Sisada R."
             android:inputType="textPersonName"
             tools:text="Sisada R" />
 
@@ -61,7 +75,7 @@
             android:id="@+id/tin_email_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:hint="John@email.com"
             android:inputType="textWebEmailAddress"
             android:text="sisada_test_00@email.com" />
 

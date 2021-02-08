@@ -1,11 +1,9 @@
 package com.sisada.neversituptodo.view
 
-import android.R
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 
@@ -30,7 +28,16 @@ class LoginActivity : AppCompatActivity() {
 
 
         this.setUpValidation()
-        this.onLoginButtonClicked()
+        this.setupOnLoginButtonClicked()
+        this.setupOnRegisterButtonClicked()
+    }
+
+    private fun setupOnRegisterButtonClicked() {
+       binding.btnRegister.setOnClickListener {
+           val intent = Intent(this, RegisterActivity::class.java)
+           startActivity(intent)
+           finish()
+       }
     }
 
     private fun setUpValidation(){
@@ -42,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         validator.addCheckTooShort(binding.tinPassword,PASSWORD_MIN_LENGTH)
     }
 
-    private fun onLoginButtonClicked() {
+    private fun setupOnLoginButtonClicked() {
 
 
         binding.btnLogin.setOnClickListener {
@@ -82,8 +89,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             })
-
-
         }
     }
 
