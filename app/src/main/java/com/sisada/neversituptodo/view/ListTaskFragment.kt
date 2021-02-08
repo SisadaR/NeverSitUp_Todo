@@ -78,6 +78,10 @@ class ListTaskFragment : Fragment() {
 
     }
 
+    fun addTask(task:Task){
+        items.add(task)
+        adapter!!.notifyDataSetChanged()
+    }
 
     fun removeTask(task:Task){
 

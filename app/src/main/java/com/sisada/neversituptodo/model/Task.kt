@@ -1,5 +1,9 @@
 package com.sisada.neversituptodo.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Task(
     val __v: Int,
     val _id: String,
@@ -8,4 +12,4 @@ data class Task(
     var description: String,
     val owner: String,
     val updatedAt: String,
-)
+) : Parcelable

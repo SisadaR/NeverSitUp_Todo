@@ -77,13 +77,13 @@ object Repository {
 
     fun addTask(
         token: String,
-        task: Task
+        description: String
     ) = liveData(Dispatchers.IO) {
 
         emit(Resource.loading(data = null))
         try {
             val data = hashMapOf(
-                "description" to task.description
+                "description" to description
             )
             emit(Resource.success(data = todoApi.addTask(token,data)))
         } catch (exception: Exception) {

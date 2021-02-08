@@ -14,10 +14,11 @@ import com.sisada.neversituptodo.api.Status
 import com.sisada.neversituptodo.databinding.ActivityTaskBinding
 import com.sisada.neversituptodo.etc.SharedInfo
 import com.sisada.neversituptodo.etc.WaitDialog
+import com.sisada.neversituptodo.model.Task
 import com.sisada.neversituptodo.viewmodel.AuthViewModel
 import com.sisada.neversituptodo.viewmodel.TaskViewModel
 
-class TaskActivity : AppCompatActivity() {
+class TaskActivity : AppCompatActivity(),AddTaskFragment.onAddTaskListener {
 
     private lateinit var binding: ActivityTaskBinding
     private lateinit var fragmentListTask : ListTaskFragment
@@ -173,4 +174,9 @@ class TaskActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun taskAdded(task: Task) {
+        fragmentListTask.addTask(task)
+    }
+
 }
