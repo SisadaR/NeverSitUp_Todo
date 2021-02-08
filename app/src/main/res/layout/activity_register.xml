@@ -50,10 +50,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tin_name_value"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Sisada R."
-            android:inputType="textPersonName"
-            tools:text="Sisada R" />
+            android:layout_height="76dp"
+            android:inputType="textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,9 +73,7 @@
             android:id="@+id/tin_email_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="John@email.com"
-            android:inputType="textWebEmailAddress"
-            android:text="sisada_test_00@email.com" />
+            android:inputType="textWebEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,8 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:inputType="textWebPassword"
-            android:text="12345678" />
+            android:inputType="textWebPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,8 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:inputType="numberDecimal"
-            android:text="18" />
+            android:inputType="numberDecimal" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
