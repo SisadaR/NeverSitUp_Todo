@@ -189,7 +189,7 @@ class AddTaskFragment : DialogFragment() {
                     var time = Calendar.getInstance(TimeZone.getDefault())
                     time.set(Calendar.HOUR, hour)
                     time.set(Calendar.MINUTE, minute)
-                    binding.labelPickerDate.text = SimpleDateFormat(TIME_FORMAT).format(time)
+                    binding.labelPickerTime.text = SimpleDateFormat(TIME_FORMAT).format(time)
                 }
 
             val timePicker = TimePickerDialog(

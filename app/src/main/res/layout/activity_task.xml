@@ -35,6 +35,13 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ImageView
+            android:id="@+id/image_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/bg"
+            tools:layout_editor_absoluteY="56dp" />
+
         <FrameLayout
             android:id="@+id/fragment_root"
             android:layout_width="match_parent"
@@ -45,7 +52,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:background="@drawable/gradient_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
