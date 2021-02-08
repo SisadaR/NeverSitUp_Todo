@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 
-import com.sisada.neversituptodo.etc.*
 import com.sisada.neversituptodo.R
 import com.sisada.neversituptodo.api.Status
 import com.sisada.neversituptodo.databinding.ActivityTaskBinding
@@ -22,6 +20,7 @@ import com.sisada.neversituptodo.viewmodel.TaskViewModel
 class TaskActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaskBinding
+    private lateinit var fragmentListTask : ListTaskFragment
     private lateinit var logoutViewModel:AuthViewModel
     private var taskViewModel = TaskViewModel()
 
@@ -31,7 +30,22 @@ class TaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupNavDrawer()
+        setupTaskListFragment()
+        setupAddNewTask()
         getAllTasks()
+    }
+
+    private fun setupAddNewTask() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun setupTaskListFragment() {
+        fragmentListTask =  ListTaskFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.fragment_root, fragmentListTask
+            )
+            .commit()
     }
 
     private fun getAllTasks() {
@@ -47,7 +61,9 @@ class TaskActivity : AppCompatActivity() {
 
                         resource.data?.let {
                                 response ->
-                            Log.d("TASK_ACTIVITY",response.data.toString())
+                            fragmentListTask.items.clear()
+                            fragmentListTask.items.addAll(response.data)
+                            fragmentListTask.adapter?.notifyDataSetChanged()
                         }
 
                     }
