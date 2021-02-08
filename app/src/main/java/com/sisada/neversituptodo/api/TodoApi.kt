@@ -2,6 +2,7 @@ package com.sisada.neversituptodo.api
 
 import com.sisada.neversituptodo.etc.BASE_URL
 import com.sisada.neversituptodo.model.LoginResponse
+import com.sisada.neversituptodo.model.LogoutResponse
 import com.sisada.neversituptodo.model.RegisterResponse
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -20,6 +21,12 @@ interface TodoApi {
     suspend fun login(
         @Body dataRaw:HashMap<String, String>
     ) : LoginResponse
+
+    @POST("/user/logout")
+    @Headers("Content-Type: application/json")
+    suspend fun logout(
+        @Header("Authorization") token:String
+    ) : LogoutResponse
 
     companion object {
         fun create(): TodoApi {

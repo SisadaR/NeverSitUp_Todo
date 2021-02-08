@@ -26,6 +26,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (SharedInfo.getToken(this).isNotEmpty())
+        {
+            gotoTaskActivity()
+            return
+        }
 
         this.setUpValidation()
         this.setupOnLoginButtonClicked()
@@ -93,7 +98,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun gotoTaskActivity() {
-        Log.d("LOGIN_ACTICITY" , "go to task view")
+        val intent = Intent(this, TaskActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 

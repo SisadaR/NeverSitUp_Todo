@@ -97,6 +97,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun gotoTaskActivity() {
-        Log.d("LOGIN_ACTICITY" , "go to task view")
+        val intent = Intent(this, TaskActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
