@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -16,11 +17,13 @@ import com.sisada.neversituptodo.databinding.ActivityTaskBinding
 import com.sisada.neversituptodo.etc.SharedInfo
 import com.sisada.neversituptodo.etc.WaitDialog
 import com.sisada.neversituptodo.viewmodel.AuthViewModel
+import com.sisada.neversituptodo.viewmodel.TaskViewModel
 
 class TaskActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaskBinding
     private lateinit var logoutViewModel:AuthViewModel
+    private var taskViewModel = TaskViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,44 @@ class TaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupNavDrawer()
+        getAllTasks()
+    }
+
+    private fun getAllTasks() {
+        var waitDialog = WaitDialog(this)
+        waitDialog.show()
+
+        taskViewModel.getAllTasks(SharedInfo.getToken(this)).observe(this, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        Log.d( "getAllTask","Success " + resource.data.toString())
+                        waitDialog.dismiss()
+
+                        resource.data?.let {
+                                response ->
+                            Log.d("TASK_ACTIVITY",response.data.toString())
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Log.d( "getAllTask","ERR")
+                        waitDialog.dismiss()
+
+                        AlertDialog.Builder(this)
+                            .setTitle("Something Wrong")
+                            .setMessage(resource.message)
+                            .setPositiveButton(android.R.string.yes, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show()
+                    }
+                    Status.LOADING -> {
+                        Log.d( "getAllTask","Loading")
+                    }
+                }
+            }
+        })
+
     }
 
     private fun setupNavDrawer() {
