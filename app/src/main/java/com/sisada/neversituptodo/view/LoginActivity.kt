@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 
 import com.sisada.neversituptodo.api.Status
 import com.sisada.neversituptodo.databinding.ActivityLoginBinding
+import com.sisada.neversituptodo.etc.PASSWORD_MIN_LENGTH
 import com.sisada.neversituptodo.etc.SharedInfo
+import com.sisada.neversituptodo.etc.Validator
 import com.sisada.neversituptodo.etc.WaitDialog
 import com.sisada.neversituptodo.viewmodel.AuthViewModel
 
@@ -19,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
     private var viewModel: AuthViewModel = AuthViewModel()
     lateinit var binding: ActivityLoginBinding
-
+    private var validator = Validator()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,13 +29,26 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        this.setUpValidation()
         this.onLoginButtonClicked()
+    }
+
+    private fun setUpValidation(){
+        validator.addCheckEmail(binding.tinEmail)
+
+        validator.addCheckEmpty(binding.tinEmail)
+        validator.addCheckEmpty(binding.tinPassword)
+
+        validator.addCheckTooShort(binding.tinPassword,PASSWORD_MIN_LENGTH)
     }
 
     private fun onLoginButtonClicked() {
 
 
         binding.btnLogin.setOnClickListener {
+
+            if (!validator.result())
+                return@setOnClickListener
 
             var waitDialog = WaitDialog(this)
             waitDialog.show()
