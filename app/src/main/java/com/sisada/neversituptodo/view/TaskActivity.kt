@@ -36,7 +36,10 @@ class TaskActivity : AppCompatActivity() {
     }
 
     private fun setupAddNewTask() {
-        //TODO("Not yet implemented")
+        binding.buttonOpenNewTask.setOnClickListener {
+            val dialog = AddTaskFragment()
+            dialog.show(supportFragmentManager, "")
+        }
     }
 
     private fun setupTaskListFragment() {

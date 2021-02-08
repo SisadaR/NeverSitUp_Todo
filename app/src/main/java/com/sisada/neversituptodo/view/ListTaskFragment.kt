@@ -67,7 +67,7 @@ class ListTaskFragment : Fragment() {
             recyclerViewListItem?.context,
             LinearLayoutManager.VERTICAL
         )
-        
+
 
         recyclerViewListItem?.addItemDecoration(dividerItemDecoration)
 
