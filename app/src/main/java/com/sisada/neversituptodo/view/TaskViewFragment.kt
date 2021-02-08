@@ -1,19 +1,22 @@
 package com.sisada.neversituptodo.view
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.sisada.neversituptodo.R
+import com.sisada.neversituptodo.api.Status
 import com.sisada.neversituptodo.databinding.FragmentTaskViewBinding
-import com.sisada.neversituptodo.etc.BUNDLE_KEY_TASK
-import com.sisada.neversituptodo.etc.DATE_FORMAT_SHORT
-import com.sisada.neversituptodo.etc.TIME_FORMAT
+import com.sisada.neversituptodo.etc.*
 import com.sisada.neversituptodo.model.Task
+import com.sisada.neversituptodo.viewmodel.TaskViewModel
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -29,6 +32,7 @@ class TaskViewFragment :  DialogFragment()  {
     private lateinit var binding : FragmentTaskViewBinding
     private lateinit var taskViewDialogCloseListener: onTaskViewDialogCloseListener
     private lateinit var activeTask:Task
+    private var viewModel = TaskViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +60,8 @@ class TaskViewFragment :  DialogFragment()  {
     }
 
     private fun bindingFunctions() {
+
+
         binding.buttonMarkDone.setOnClickListener {
             binding.buttonMarkUndone.visibility = View.VISIBLE
             binding.buttonMarkDone.visibility = View.GONE
@@ -69,8 +75,10 @@ class TaskViewFragment :  DialogFragment()  {
         }
 
         binding.buttonDelete.setOnClickListener {
-            taskViewDialogCloseListener.taskViewDialogDeleteTask(activeTask)
-            dismiss()
+            onClickDelete()
+        }
+        binding.buttonSaveTask.setOnClickListener {
+            onClickSave()
         }
     }
 
@@ -94,15 +102,109 @@ class TaskViewFragment :  DialogFragment()  {
 
     private fun updateActiveTask()
     {
+
         activeTask.completed = binding.buttonMarkDone.visibility != View.VISIBLE
         activeTask.description =  binding.editTextShowTask.text.toString()
     }
 
+    fun onClickSave(){
+        var waitDialog = WaitDialog(activity!!)
+        waitDialog.show()
+
+        this.updateActiveTask()
+        viewModel.updateTask(SharedInfo.getToken(activity!!), activeTask).observe(this, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        Log.d("updateTask", "Success " + resource.data.toString())
+                        waitDialog.dismiss()
+
+                        resource.data?.let { response ->
+                            if (response.success) {
+                                taskViewDialogCloseListener.taskViewDialogClose(activeTask)
+                                dismiss()
+                            } else {
+                                AlertDialog.Builder(activity!!)
+                                    .setTitle("Something Wrong")
+                                    .setMessage("can't add task")
+                                    .setPositiveButton(android.R.string.yes, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show()
+                            }
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Log.d("updateTask", "ERR")
+                        waitDialog.dismiss()
+
+                        AlertDialog.Builder(activity!!)
+                            .setTitle("Something Wrong")
+                            .setMessage(resource.message)
+                            .setPositiveButton(android.R.string.yes, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show()
+                    }
+                    Status.LOADING -> {
+                        Log.d("updateTask", "Loading")
+                    }
+                }
+            }
+        })
+    }
+    fun onClickDelete(){
+
+        var waitDialog = WaitDialog(activity!!)
+        waitDialog.show()
+
+        this.updateActiveTask()
+
+        viewModel.deleteTask(SharedInfo.getToken(activity!!), activeTask).observe(this, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        Log.d("deleteTask", "Success " + resource.data.toString())
+                        waitDialog.dismiss()
+
+                        resource.data?.let { response ->
+                            if (response.success) {
+                                taskViewDialogCloseListener.taskViewDialogDeleteTask(activeTask)
+                                dismiss()
+                            } else {
+                                AlertDialog.Builder(activity!!)
+                                    .setTitle("Something Wrong")
+                                    .setMessage("can't add task")
+                                    .setPositiveButton(android.R.string.yes, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show()
+                            }
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Log.d("deleteTask", "ERR")
+                        waitDialog.dismiss()
+
+                        AlertDialog.Builder(activity!!)
+                            .setTitle("Something Wrong")
+                            .setMessage(resource.message)
+                            .setPositiveButton(android.R.string.yes, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show()
+                    }
+                    Status.LOADING -> {
+                        Log.d("deleteTask", "Loading")
+                    }
+                }
+            }
+        })
+    }
 
     override fun onCancel(dialog: DialogInterface) {
-        this.updateActiveTask()
-        taskViewDialogCloseListener.taskViewDialogClose(activeTask)
+
+
         super.onCancel(dialog)
+
     }
 
 
